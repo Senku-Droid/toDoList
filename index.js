@@ -29,15 +29,29 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
-function renderHome(res, todos = [], message = "") {
+function renderHome(res, todos = [], message = "", editId = "") {
     return res.render("home", {
         todos,
         message,
+        editId: String(editId || ""),
+        labels: formLabels,
+        priorityOptions,
+        addForm: {
+            formAction: "/ajouter",
+            submitLabel: "Ajouter",
+            values: {
+                nom: "",
+                deadline: "",
+                priorite: "2",
+            },
+            formClass: "todo-form",
+        },
     });
 }
 
 app.get("/", async (req, res) => {
     const message = req.query.message || "";
+    const editId = req.query.edit || "";
 
     try {
         if (!supabase) {
@@ -51,28 +65,14 @@ app.get("/", async (req, res) => {
 
         if (error) throw error;
 
-        return renderHome(res, todos ?? [], message);
+        return renderHome(res, todos ?? [], message, editId);
     } catch (error) {
         return renderHome(res, [], `Erreur: ${error.message}`);
     }
 });
 
 app.get("/ajouter", (req, res) => {
-    res.render("ajouter", {
-        pageTitle: "Ajouter une tache",
-        heading: "Ajouter une tache",
-        backLabel: "Retour",
-        formAction: "/ajouter",
-        submitLabel: "Ajouter",
-        values: {
-            nom: "",
-            deadline: "",
-            priorite: "2",
-        },
-        labels: formLabels,
-        priorityOptions,
-        formClass: "todo-form",
-    });
+    return res.redirect("/");
 });
 
 app.post("/ajouter", async (req, res) => {
@@ -120,42 +120,7 @@ app.post("/supprimer/:id", async (req, res) => {
 });
 
 app.get("/modifier/:id", async (req, res) => {
-    if (!supabase) {
-        return res.redirect("/?message=Supabase non configure dans .env");
-    }
-
-    try {
-        const { data: todo, error } = await supabase
-            .from(toDo)
-            .select("id, nom, deadline, priorite")
-            .eq("id", req.params.id)
-            .single();
-
-        if (error) throw error;
-
-        if (!todo) {
-            return res.redirect("/?message=Tache introuvable");
-        }
-
-        return res.render("modifier", {
-            pageTitle: "Modifier une tache",
-            heading: "Modifier une tache",
-            subtitle: "Mets a jour ta tache puis enregistre.",
-            backLabel: "Retour",
-            formAction: `/modifier/${todo.id}`,
-            submitLabel: "Sauvegarder",
-            values: {
-                nom: todo.nom || "",
-                deadline: todo.deadline || "",
-                priorite: String(todo.priorite || "2"),
-            },
-            labels: formLabels,
-            priorityOptions,
-            formClass: "todo-form",
-        });
-    } catch (error) {
-        return res.redirect(`/?message=Erreur chargement modification: ${error.message}`);
-    }
+    return res.redirect(`/?edit=${req.params.id}`);
 });
 
 app.post("/modifier/:id", async (req, res) => {

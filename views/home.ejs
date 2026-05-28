@@ -9,10 +9,6 @@
 <body>
     <h1>Ma ToDo List</h1>
 
-    <p>
-        <a href="/ajouter">Ajouter une tâche</a>
-    </p>
-
     <% if (message) { %>
         <p><%= message %></p>
     <% } %>
@@ -35,20 +31,53 @@
 
             <% if (todos && todos.length > 0) { %>
                 <% todos.forEach((todo) => { %>
-                    <tr>
-                        <td><%= todo.nom %></td>
-                        <td><%= todo.deadline || '-' %></td>
-                        <td><%= todo.priorite %></td>
-                        <td>
-                            <a href="/modifier/<%= todo.id %>">Modifier</a>
-                            <form action="/supprimer/<%= todo.id %>" method="POST">
-                                <button type="submit">Supprimer</button>
-                            </form>
-                        </td>
-                    </tr>
+                    <% if (String(editId) === String(todo.id)) { %>
+                        <tr>
+                            <td colspan="4">
+                                <h2>Modifier la tâche</h2>
+                                <%- include('partials/todo-form', {
+                                    formAction: `/modifier/${todo.id}`,
+                                    submitLabel: 'Sauvegarder',
+                                    values: {
+                                        nom: todo.nom || '',
+                                        deadline: todo.deadline || '',
+                                        priorite: String(todo.priorite || '2')
+                                    },
+                                    labels,
+                                    priorityOptions,
+                                    formClass: 'todo-form'
+                                }) %>
+                                <p><a href="/">Annuler</a></p>
+                            </td>
+                        </tr>
+                    <% } else { %>
+                        <tr>
+                            <td><%= todo.nom %></td>
+                            <td><%= todo.deadline || '-' %></td>
+                            <td><%= todo.priorite %></td>
+                            <td>
+                                <a href="/?edit=<%= todo.id %>">Modifier</a>
+                                <form action="/supprimer/<%= todo.id %>" method="POST">
+                                    <button type="submit">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% } %>
                 <% }) %>
             <% } %>
         </tbody>
     </table>
+
+    <section>
+        <h2>Ajouter une tâche</h2>
+        <%- include('partials/todo-form', {
+            formAction: addForm.formAction,
+            submitLabel: addForm.submitLabel,
+            values: addForm.values,
+            labels,
+            priorityOptions,
+            formClass: addForm.formClass
+        }) %>
+    </section>
 </body>
 </html>
