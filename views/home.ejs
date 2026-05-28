@@ -1,15 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Ma ToDo List</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <h1>Hello World! <%= user.prenom %> <%= user.nom %></h1>
-    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi sunt est, reiciendis sed recusandae repellat blanditiis cum dignissimos quos nulla illo fuga doloremque aperiam unde, deserunt temporibus rerum! Corrupti, mollitia!</p>
-    
+    <h1>Ma ToDo List</h1>
 
+    <p>
+        <a href="/ajouter">Ajouter une tâche</a>
+    </p>
+
+    <% if (message) { %>
+        <p><%= message %></p>
+    <% } %>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Deadline</th>
+                <th>Priorité</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (!todos || todos.length === 0) { %>
+                <tr>
+                    <td colspan="4">Aucune tâche</td>
+                </tr>
+            <% } %>
+
+            <% if (todos && todos.length > 0) { %>
+                <% todos.forEach((todo) => { %>
+                    <tr>
+                        <td><%= todo.nom %></td>
+                        <td><%= todo.deadline || '-' %></td>
+                        <td><%= todo.priorite %></td>
+                        <td>
+                            <form action="/supprimer/<%= todo.id %>" method="POST">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } %>
+        </tbody>
+    </table>
 </body>
 </html>

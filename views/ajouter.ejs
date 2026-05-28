@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter une tâche</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Ajouter une tâche</h1>
+
+    <p><a href="/">Retour à la liste</a></p>
+
+    <form action="/ajouter" method="POST">
+        <p>
+            <label for="nom">Nom</label><br>
+            <input type="text" id="nom" name="nom" required>
+        </p>
+
+        <p>
+            <label for="deadline">Deadline</label><br>
+            <input type="date" id="deadline" name="deadline">
+        </p>
+
+        <p>
+            <label for="priorite">Priorité</label><br>
+            <select id="priorite" name="priorite" required>
+                <option value="Haute">Haute</option>
+                <option value="Moyenne">Moyenne</option>
+                <option value="Basse">Basse</option>
+            </select>
+        </p>
+
+        <button type="submit">Enregistrer</button>
+        <a href="/" style="margin-left: 10px;">
+            <button type="button">Retour</button>
+        </a>
+    </form>
+
+</body>
+</html>

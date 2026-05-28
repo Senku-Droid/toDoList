@@ -4,10 +4,43 @@
     box-sizing: border-box;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 12px;
+}
+
 h1 {
-    color: red;
+    margin-bottom: 16px;
+}
+
+input,
+select {
+    padding: 6px;
+    width: 300px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+}
+
+th,
+td {
+    border: 1px solid #999;
+    padding: 8px;
+}
+
+a {
+    color: blue;
+}
+
+button {
+    padding: 6px 10px;
 }
 
 p {
-    color: blue;
+    margin-bottom: 10px;
 }
