@@ -3,39 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter une tâche</title>
+    <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <h1>Ajouter une tâche</h1>
+    <h1><%= heading %></h1>
 
-    <p><a href="/">Retour à la liste</a></p>
+    <p><a href="/"><%= backLabel %></a></p>
 
-    <form action="/ajouter" method="POST">
-        <p>
-            <label for="nom">Nom</label><br>
-            <input type="text" id="nom" name="nom" required>
-        </p>
-
-        <p>
-            <label for="deadline">Deadline</label><br>
-            <input type="date" id="deadline" name="deadline">
-        </p>
-
-        <p>
-            <label for="priorite">Priorité</label><br>
-            <select id="priorite" name="priorite" required>
-                <option value="Haute">Haute</option>
-                <option value="Moyenne">Moyenne</option>
-                <option value="Basse">Basse</option>
-            </select>
-        </p>
-
-        <button type="submit">Enregistrer</button>
-        <a href="/" style="margin-left: 10px;">
-            <button type="button">Retour</button>
-        </a>
-    </form>
+    <%- include("partials/todo-form", {
+        formAction,
+        submitLabel,
+        values,
+        labels,
+        priorityOptions,
+        formClass
+    }) %>
 
 </body>
 </html>

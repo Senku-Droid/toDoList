@@ -1,0 +1,38 @@
+<form action="<%= formAction %>" method="POST" class="<%= formClass || '' %>">
+    <p>
+        <label for="nom"><%= labels.nom %></label><br>
+        <input
+            type="text"
+            id="nom"
+            name="nom"
+            value="<%= values.nom %>"
+            required
+        >
+    </p>
+
+    <p>
+        <label for="deadline"><%= labels.deadline %></label><br>
+        <input
+            type="date"
+            id="deadline"
+            name="deadline"
+            value="<%= values.deadline %>"
+        >
+    </p>
+
+    <p>
+        <label for="priorite"><%= labels.priorite %></label><br>
+        <select id="priorite" name="priorite" required>
+            <% priorityOptions.forEach((option) => { %>
+                <option
+                    value="<%= option.value %>"
+                    <%= String(values.priorite) === String(option.value) ? 'selected' : '' %>
+                >
+                    <%= option.label %>
+                </option>
+            <% }) %>
+        </select>
+    </p>
+
+    <button type="submit"><%= submitLabel %></button>
+</form>

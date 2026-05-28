@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier une tâche</title>
+    <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -12,32 +12,18 @@
 
     <main class="container page-form">
         <section class="card form-card">
-            <a class="btn btn-ghost" href="/">← Retour</a>
-            <h1>Modifier une tâche</h1>
-            <p class="subtitle">Mets à jour ta tâche puis enregistre.</p>
+            <a class="btn btn-ghost" href="/"><%= backLabel %></a>
+            <h1><%= heading %></h1>
+            <p class="subtitle"><%= subtitle %></p>
 
-            <form action="/modifier/<%= todo.id %>" method="POST" class="todo-form">
-                <div class="field">
-                    <label for="nom">Nom</label>
-                    <input type="text" id="nom" name="nom" value="<%= todo.nom %>" required>
-                </div>
-
-                <div class="field">
-                    <label for="deadline">Deadline</label>
-                    <input type="date" id="deadline" name="deadline" value="<%= todo.deadline || '' %>">
-                </div>
-
-                <div class="field">
-                    <label for="priorite">Priorité</label>
-                    <select id="priorite" name="priorite" required>
-                        <option value="1" <%= String(todo.priorite) === '1' ? 'selected' : '' %>>Haute</option>
-                        <option value="2" <%= String(todo.priorite) === '2' ? 'selected' : '' %>>Moyenne</option>
-                        <option value="3" <%= String(todo.priorite) === '3' ? 'selected' : '' %>>Basse</option>
-                    </select>
-                </div>
-
-                <button class="btn btn-primary" type="submit">Sauvegarder</button>
-            </form>
+            <%- include("partials/todo-form", {
+                formAction,
+                submitLabel,
+                values,
+                labels,
+                priorityOptions,
+                formClass
+            }) %>
         </section>
     </main>
 </body>

@@ -11,6 +11,18 @@ const supabaseUrl = process.env.SUPABASE_URL?.trim();
 const supabaseKey = process.env.SUPABASE_KEY?.trim();
 const toDo = "toDo";
 
+const formLabels = {
+    nom: "Nom",
+    deadline: "Deadline",
+    priorite: "Priorite",
+};
+
+const priorityOptions = [
+    { value: "1", label: "Haute" },
+    { value: "2", label: "Moyenne" },
+    { value: "3", label: "Basse" },
+];
+
 const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 app.set("view engine", "ejs");
@@ -46,7 +58,21 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/ajouter", (req, res) => {
-    res.render("ajouter");
+    res.render("ajouter", {
+        pageTitle: "Ajouter une tache",
+        heading: "Ajouter une tache",
+        backLabel: "Retour",
+        formAction: "/ajouter",
+        submitLabel: "Ajouter",
+        values: {
+            nom: "",
+            deadline: "",
+            priorite: "2",
+        },
+        labels: formLabels,
+        priorityOptions,
+        formClass: "todo-form",
+    });
 });
 
 app.post("/ajouter", async (req, res) => {
@@ -111,7 +137,22 @@ app.get("/modifier/:id", async (req, res) => {
             return res.redirect("/?message=Tache introuvable");
         }
 
-        return res.render("modifier", { todo });
+        return res.render("modifier", {
+            pageTitle: "Modifier une tache",
+            heading: "Modifier une tache",
+            subtitle: "Mets a jour ta tache puis enregistre.",
+            backLabel: "Retour",
+            formAction: `/modifier/${todo.id}`,
+            submitLabel: "Sauvegarder",
+            values: {
+                nom: todo.nom || "",
+                deadline: todo.deadline || "",
+                priorite: String(todo.priorite || "2"),
+            },
+            labels: formLabels,
+            priorityOptions,
+            formClass: "todo-form",
+        });
     } catch (error) {
         return res.redirect(`/?message=Erreur chargement modification: ${error.message}`);
     }
